@@ -1,0 +1,15 @@
+{
+  "name": "reddit",
+  "version": "1.0.0",
+  "description": "connect to reddit and make posts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "posttoreddit"
+  },
+  "author": "Marc Cueto",
+  "license": "ISC"
+}
