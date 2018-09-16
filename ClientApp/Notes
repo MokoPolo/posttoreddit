@@ -1,0 +1,30 @@
+hello
+
+<a href="https://www.reddit.com/api/v1/authorize?
+client_id=qaBwR_-kgocPqA&
+response_type=code&
+state=djdfjdfjkaf&
+redirect_uri=http://mokman-001-site3.ftempurl.com/msf.html&
+scope=identity&
+duration=temporary">ssss</a>
+
+https://www.reddit.com/api/v1/authorize?
+client_id=qaBwR_-kgocPqA&
+response_type=code&
+state=djdfjdfjkaf&
+redirect_uri=http://mokman-001-site3.ftempurl.com/msf.html&
+scope=identity&
+redirect_uri=http://mokman-001-site3.ftempurl.com/msf.html&
+scope=identity
+
+    https://www.reddit.com/api/v1/authorize?api_key&
+    client_id=<my_client_id>&
+    redirect_uri=http://localhost:1337&
+    response_type=code&
+    scope=identity&
+    state=PUT_ANY_STRING_HERE
+
+
+
+    clientid:qaBwR_-kgocPqA
+secret:SlV7tGarx2P45q6HSM-pMFn2sFY
