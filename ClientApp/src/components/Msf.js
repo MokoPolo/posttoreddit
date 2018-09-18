@@ -36,14 +36,35 @@ export class Msf extends Component {
              console.log(json);
              this.setState({ accessToken: json.access_token, refreshToken: json.refresh_token });
 
-             this.getPrefs();
+             // this.getPrefs();
+             this.postComment();
+             need to change scope
         }
          catch (error) {
              console.log("error");
             console.log(error);
         }
-    }
+        }
     }   
+
+    
+    async postComment () {
+        const parentId = 't3_9gwb1h';
+        const text = 'baby dont hurt me';
+        const settings = {
+            method: 'POST',
+            headers: {
+                Authorization: 'bearer ' + this.state.accessToken
+            }
+        };
+        const response = await fetch('https://oauth.reddit.com/api/comment?api_type=json&text=foobar&thing_id=' + parentId + 'text=' + text, settings);
+
+/*
+headers : {
+                  'User-Agent' : 'fooBot/0.1 by USERNAME',
+                }
+                */
+      }
 
     async getPrefs() {
         try {
