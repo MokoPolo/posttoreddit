@@ -42,7 +42,7 @@ id:98vj9e
 
 
 
-
+https://oauth.reddit.com/api/comment
 https://www.reddit.com/r/MarvelStrikeForce/comments/8wd05c/alliance_recruitment_megathread_mk2/
 id
 t1_8wd05c
@@ -51,3 +51,19 @@ t1_8wd05c
 
 to test
 t3_9gwb1h
+
+
+
+A few things to do:
+- do I need to post user-agent?
+- test state
+-2 buttons:
+    - 1 to login
+    - 2 to post to thread
+- Have a checkbox that will give option to post every 3 hrs
+
+button 2 is disabled when user has to log identity
+button 1 is disabled after stuff is in querystring
+- Put a countdown timer on page
+- Write log onto screen with status. ie posted. waiting for next post etc
+- clean up code

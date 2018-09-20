@@ -6,7 +6,7 @@ export class Msf extends Component {
     displayName = Msf.name;
 
     async componentDidMount() {
-        const parsed = queryString.parse(this.props.location.search);
+ const parsed = queryString.parse(this.props.location.search);
 
         if (parsed !== null){
          try {
@@ -38,7 +38,6 @@ export class Msf extends Component {
 
              // this.getPrefs();
              this.postComment();
-             need to change scope
         }
          catch (error) {
              console.log("error");
@@ -49,15 +48,16 @@ export class Msf extends Component {
 
     
     async postComment () {
-        const parentId = 't3_9gwb1h';
-        const text = 'baby dont hurt me';
+        const parentId = 't3_8wd05c';
+        const text = '%2A+Alliance+Name%3A+eXtreme+Force%0D%0A%0D%0A%2A+Description%3A+members+ranging+from+90-150k%2C+daily+participation%2C+chill+group+of+people+from+around+the+world.+%2A+Requirements%3A+90k%2B+ST+600+raid+tickets+daily%2C+daily+raid+participation.%0D%0A%0D%0A%2A+Contact+Details%3A+Spitfire_UK%239620+on+discord%0D%0A%0D%0A%2A+Additional+Notes%3A+T3+rewards+on+Ultimus+V+Raid.+T1%2F2+DP+En+Fuego+%26+Thanos+III+Raids';
         const settings = {
             method: 'POST',
             headers: {
                 Authorization: 'bearer ' + this.state.accessToken
             }
         };
-        const response = await fetch('https://oauth.reddit.com/api/comment?api_type=json&text=foobar&thing_id=' + parentId + 'text=' + text, settings);
+        console.log('about to call fetch on ' + 'https://oauth.reddit.com/api/comment?api_type=json&thing_id=' + parentId + '&text=' + text);
+        const response = await fetch('https://oauth.reddit.com/api/comment?api_type=json&text=foobar&thing_id=' + parentId + '&text=' + text, settings);
 
 /*
 headers : {
@@ -104,7 +104,7 @@ client_id=qaBwR_-kgocPqA&
 response_type=code&
 state=djdfjdfjkaf&
 redirect_uri=http://www.hackandslash.net/msf&
-scope=identity&
+scope=submit&
 duration=permanent">1. Log into reddit</a>
 
 
