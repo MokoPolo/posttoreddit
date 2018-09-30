@@ -6,7 +6,7 @@ export class Msf extends Component {
   displayName = Msf.name;
 
   async componentDidMount() {
-    const parsed = null; // queryString.parse(this.props.location.search);
+    const parsed = queryString.parse(this.props.location.search);
     debugger;
     const foo = this.props;
     const foo2 = this.props.location;
