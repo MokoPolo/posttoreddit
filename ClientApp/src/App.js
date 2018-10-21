@@ -4,7 +4,7 @@ import { Msf } from "./components/Msf";
 import { Switch, Link, Route } from "react-router-dom";
 import { Home } from "./components/Home";
 
-const Header = () => <div>this is the header</div>;
+const Header = () => <div></div>;
 
 const Main = () => (
   <div>
