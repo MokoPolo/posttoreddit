@@ -19,7 +19,7 @@ export class Msf extends Component {
     }
     async componentDidMount() {
         const parsed = queryString.parse(this.props.location.search);
-
+        
         // If user logged into reddit then we have to capture token information
         if (parsed !== null && parsed.code) {
             try {
@@ -37,31 +37,34 @@ export class Msf extends Component {
                     headers: {
                         Authorization:
                             "Basic cWFCd1JfLWtnb2NQcUE6U2xWN3RHYXJ4MlA0NXE2SFNNLXBNRm4yc0ZZ",
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "User-Agent": "afs"
+                        "Content-Type": "application/x-www-form-urlencoded"
+                        //"User-Agent": "afs"
                     }
                 };
+
                 const response = await fetch(
                     `https://www.reddit.com/api/v1/access_token`,
                     settings
                 );
                 if (!response.ok) {
                     this.setState({
-                        alertVisible: false,
+                        alertVisible: true,
                         alertMessage: `Error has occurred statuscode: ${response.status}`,
                         alertColor: 'danger'
-                    })
+                    });
                     //throw Error(response.statusText);
                 }
-                const json = await response.json();
-
-                this.setState({
-                    accessToken: json.access_token,
-                    refreshToken: json.refresh_token,
-                    postBtnDisabled: false,
-                    loginBtnDisabled: true
-                });
-
+                else {
+                    const json = await response.json();
+                    this.setState({
+                        accessToken: json.access_token,
+                        refreshToken: json.refresh_token,
+                        postBtnDisabled: false,
+                        loginBtnDisabled: true,
+                        alertMessage: 'Login successful move to step 2',
+                        alertVisible: true
+                    });
+                }
                 // this.postComment();
             } catch (error) {
                 console.log("error");
@@ -70,7 +73,7 @@ export class Msf extends Component {
         }
     }
     onDismiss() {
-        this.setState({ visible: false });
+        this.setState({ alertVisible: false });
     }
   // Post comment to reddit api
   async postComment() {
