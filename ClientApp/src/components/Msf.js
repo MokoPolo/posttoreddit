@@ -78,7 +78,7 @@ export class Msf extends Component {
   async postComment() {
     const parentId = "t3_8wd05c";
     const text =
-      "%2A+Alliance+Name%3A+eXtreme+Force%0D%0A%0D%0A%2A+Description%3A+members+ranging+from+110-160k%2C+daily+participation%2C+chill+group+of+people+from+around+the+world.+%2A+Requirements%3A+120k%2B+ST+600+raid+tickets+daily%2C+daily+raid+participation.%0D%0A%0D%0A%2A+Contact+Details%3A+Spitfire_UK%239620+on+discord%0D%0A%0D%0A%2A+Additional+Notes%3A+T3+rewards+on+Ultimus+V+Raid.+T1%2F2+DP+En+Fuego+%26+Thanos+III+Raids";
+      "Description%3A%20A%20semi-competitive%20alliance%20that%20runs%20daily%20lvl%2065%2B%20Ultimus%20raids%20to%2030%25%20completion.%20It%E2%80%99s%20an%20organised%20raid%2C%20with%20Strike%20Teams%20and%20Lanes%20pre-identified%20for%20each%20member.%20All%20time-zones%20welcome.%0A%0ARequirements%3A%0A%0AAccount%20Level%3A%2065%2B%0A%0ACollection%20Power%3A%20500K%2B%0A%0AStrongest%20Team%3A%20120K%2B%0A%0ADaily%20Activity%20(in-game%20and%20Discord)%0A%0AHow%20to%20Apply%3A%20msg%20Spitfire_UK%239620%20on%20Discord";
     const settings = {
       method: "POST",
       headers: {
