@@ -76,9 +76,9 @@ export class Msf extends Component {
   }
   // Post comment to reddit api
   async postComment() {
-    const parentId = "t3_8wd05c";
+      const parentId = "t3_9whek6";
     const text =
-      "Description%3A%20A%20semi-competitive%20alliance%20that%20runs%20daily%20lvl%2065%2B%20Ultimus%20VI%20raids%20to%2030%25%20completion.%20It%E2%80%99s%20an%20organised%20raid%2C%20with%20Strike%20Teams%20and%20Lanes%20pre-identified%20for%20each%20member.%20All%20time-zones%20welcome.%0A%0ARequirements%3A%0A%0AAccount%20Level%3A%2065%2B%0A%0ACollection%20Power%3A%20500K%2B%0A%0AStrongest%20Team%3A%20120K%2B%0A%0AMinimum%20Damage%20Ultimus%2065%2B%3A%202%20million%20%0A%0AMinimum%20Damage%20other%20raids%3A%202%20million%0A%0ADaily%20Activity%20is%20a%20must%20(in-game%20and%20Discord)%0A%0AHow%20to%20Apply%3A%20%20Msg%20Spitfire_UK%239620%20on%20Discord.%0A%0AAdditional%20Notes%3A%20Thanos%20III%20T2%2C%20DP%20En%20Fuego%20T2%2C%20Alpha%20T1";
+      "**Alliance%20Name**%3A%20eXtreme%20Force%0A%0A**Description**%3A%20A%20semi-competitive%20alliance%20that%20runs%20daily%20lvl%2065%2B%20Ultimus%20VI%20raids%20to%2030%25%20completion.%20Our%20plan%20is%20to%20shift%20to%2060%25%20shortly.%20It%E2%80%99s%20an%20organised%20raid%2C%20with%20Strike%20Teams%20and%20Lanes%20pre-identified%20for%20each%20member.%20All%20time-zones%20welcome.%0A%0A**Requirements**%3A%0A%0A**Account%20Level**%3A%2070%0A%0A**Collection%20Power**%3A%20900K%2B%0A%0A**Strongest%20Team**%3A%20160K%2B%0A%0A**Minimum%20Damage%20Ultimus%2065%2B**%3A%202%20million%20%0A%0A**Minimum%20Damage%20other%20raids**%3A%202%20million%0A%0A**Donation%20daily%20minimum**%3A%2010k%0A%0A**Daily%20Activity%20is%20a%20must%20(in-game%20and%20Discord)**%0A%0A**How%20to%20Apply**%3A%20%20Msg%20Spitfire_UK%239620%20on%20Discord.%0A%0A**Additional%20Notes**%3A%20Thanos%20III%20T2%2C%20DP%20En%20Fuego%20T2%2C%20Alpha%20T1%2C%20Beta%20III%20T1";
     const settings = {
       method: "POST",
       headers: {
