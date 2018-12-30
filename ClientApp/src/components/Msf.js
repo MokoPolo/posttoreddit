@@ -78,7 +78,7 @@ export class Msf extends Component {
   async postComment() {
     const parentId = "t3_8wd05c";
     const text =
-      "Description%3A%20A%20semi-competitive%20alliance%20that%20runs%20daily%20lvl%2065%2B%20Ultimus%20raids%20to%2030%25%20completion.%20It%E2%80%99s%20an%20organised%20raid%2C%20with%20Strike%20Teams%20and%20Lanes%20pre-identified%20for%20each%20member.%20All%20time-zones%20welcome.%0A%0ARequirements%3A%0A%0AAccount%20Level%3A%2065%2B%0A%0ACollection%20Power%3A%20500K%2B%0A%0AStrongest%20Team%3A%20120K%2B%0A%0ADaily%20Activity%20(in-game%20and%20Discord)%0A%0AHow%20to%20Apply%3A%20msg%20Spitfire_UK%239620%20on%20Discord";
+      "Description%3A%20A%20semi-competitive%20alliance%20that%20runs%20daily%20lvl%2065%2B%20Ultimus%20VI%20raids%20to%2030%25%20completion.%20It%E2%80%99s%20an%20organised%20raid%2C%20with%20Strike%20Teams%20and%20Lanes%20pre-identified%20for%20each%20member.%20All%20time-zones%20welcome.%0A%0ARequirements%3A%0A%0AAccount%20Level%3A%2065%2B%0A%0ACollection%20Power%3A%20500K%2B%0A%0AStrongest%20Team%3A%20120K%2B%0A%0AMinimum%20Damage%20Ultimus%2065%2B%3A%202%20million%20%0A%0AMinimum%20Damage%20other%20raids%3A%202%20million%0A%0ADaily%20Activity%20is%20a%20must%20(in-game%20and%20Discord)%0A%0AHow%20to%20Apply%3A%20%20Msg%20Spitfire_UK%239620%20on%20Discord.%0A%0AAdditional%20Notes%3A%20Thanos%20III%20T2%2C%20DP%20En%20Fuego%20T2%2C%20Alpha%20T1";
     const settings = {
       method: "POST",
       headers: {
