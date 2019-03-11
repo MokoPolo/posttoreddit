@@ -12,11 +12,13 @@ export class Msf extends Component {
       loginBtnDisabled: false,
       alertVisible: false,
       alertMessage: "",
-      alertColor: "primary"
+      alertColor: "primary",
+      repostBtnDisabled: true
     };
 
     this.onDismiss = this.onDismiss.bind(this);
   }
+
   async componentDidMount() {
     const parsed = queryString.parse(this.props.location.search);
 
@@ -38,7 +40,6 @@ export class Msf extends Component {
             Authorization:
               "Basic cWFCd1JfLWtnb2NQcUE6U2xWN3RHYXJ4MlA0NXE2SFNNLXBNRm4yc0ZZ",
             "Content-Type": "application/x-www-form-urlencoded"
-            //"User-Agent": "afs"
           }
         };
 
@@ -71,6 +72,51 @@ export class Msf extends Component {
       }
     }
   }
+
+  async refreshToken() {
+    try {
+      const data = {
+        grant_type: "refresh_token",
+        refresh_token: this.state.refreshToken
+      };
+
+      const settings = {
+        method: "POST",
+        body: queryString.stringify(data),
+        headers: {
+          Authorization:
+            "Basic cWFCd1JfLWtnb2NQcUE6U2xWN3RHYXJ4MlA0NXE2SFNNLXBNRm4yc0ZZ",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
+
+      const response = await fetch(
+        `https://www.reddit.com/api/v1/access_token`,
+        settings
+      );
+      if (!response.ok) {
+        this.setState({
+          alertVisible: true,
+          alertMessage: `Error has occurred statuscode: ${response.status}`,
+          alertColor: "danger"
+        });
+        //throw Error(response.statusText);
+      } else {
+        const json = await response.json();
+        this.setState({
+          accessToken: json.access_token,
+          postBtnDisabled: true,
+          loginBtnDisabled: true
+        });
+        this.postComment();
+      }
+      // this.postComment();
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+    }
+  }
+
   onDismiss() {
     this.setState({ alertVisible: false });
   }
@@ -101,42 +147,26 @@ export class Msf extends Component {
       });
       //throw Error(response.status);
     } else {
+      const currentdate = new Date();
       this.setState({
         alertVisible: true,
-        alertMessage: "Operation was a success",
-        alertColor: "success"
+        alertMessage:
+          "Posted to Reddit at " +
+          currentdate.getHours() +
+          ":" +
+          currentdate.getMinutes(),
+        alertColor: "success",
+        postBtnDisabled: true,
+        repostBtnDisabled: false
       });
     }
   }
 
-  //async getPrefs() {
-  //  try {
-  //    const settings = {
-  //      headers: {
-  //        Authorization: "bearer " + this.state.accessToken
-  //      }
-  //    };
-  //    const response = await fetch(
-  //      `https://oauth.reddit.com/api/v1/me/prefs/`,
-  //      settings
-  //    );
-  //    if (!response.ok) {
-  //      throw Error(response.statusText);
-  //    }
-  //    const json = await response.json();
-
-  //    console.log("showing response.json in getPrefs()");
-  //    console.log(json);
-  //  } catch (e) {
-  //    console.log("error");
-  //    console.log(e);
-  //  }
-  //}
   render() {
     return (
       <div>
         <Row>
-          <Col sm="6">
+          <Col sm="4">
             <Card body>
               <CardTitle>1. Log into reddit</CardTitle>
               <CardText>
@@ -150,7 +180,7 @@ export class Msf extends Component {
               </Button>
             </Card>
           </Col>
-          <Col sm="6">
+          <Col sm="4">
             <Card body>
               <CardTitle>2. Post to reddit</CardTitle>
               <CardText>
@@ -162,6 +192,21 @@ export class Msf extends Component {
                 onClick={() => this.postComment()}
               >
                 Post now
+              </Button>
+            </Card>
+          </Col>
+          <Col sm="4">
+            <Card body>
+              <CardTitle>2. Repost to reddit</CardTitle>
+              <CardText>
+                Repost to the MSF alliance recruitment subreddit.
+                <br />
+              </CardText>
+              <Button
+                disabled={this.state.repostBtnDisabled}
+                onClick={() => this.refreshToken()}
+              >
+                Repost now
               </Button>
             </Card>
           </Col>
