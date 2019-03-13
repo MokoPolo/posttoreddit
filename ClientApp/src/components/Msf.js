@@ -13,67 +13,96 @@ export class Msf extends Component {
       alertVisible: false,
       alertMessage: "",
       alertColor: "primary",
-      repostBtnDisabled: true
+      repostBtnDisabled: true,
+      refreshToken: null,
+      myDog: false
     };
 
     this.onDismiss = this.onDismiss.bind(this);
   }
 
-  async componentDidMount() {
-    const parsed = queryString.parse(this.props.location.search);
+  componentDidMount() {
+    // If localstorage item exists use refresh token to get access token
+    // set refresh token
+    const storageRefreshToken = localStorage.getItem("refreshToken");
+    this.setState({
+      myDog: true
+    });
+    alert(this.state.myDog);
+    if (storageRefreshToken) {
+      this.setState({
+        refreshToken: storageRefreshToken
+      });
+      this.getRefreshToken();
+    } else {
+      const parsed = queryString.parse(this.props.location.search);
 
-    // If user logged into reddit then we have to capture token information
-    if (parsed !== null && parsed.code) {
-      try {
-        const code = parsed.code;
-        const authCode = "authorization_code";
-        const data = {
-          grant_type: authCode,
-          code: code,
-          redirect_uri: "http://www.hackandslash.net/msf"
-        };
-
-        const settings = {
-          method: "POST",
-          body: queryString.stringify(data),
-          headers: {
-            Authorization:
-              "Basic cWFCd1JfLWtnb2NQcUE6U2xWN3RHYXJ4MlA0NXE2SFNNLXBNRm4yc0ZZ",
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        };
-
-        const response = await fetch(
-          `https://www.reddit.com/api/v1/access_token`,
-          settings
-        );
-        if (!response.ok) {
-          this.setState({
-            alertVisible: true,
-            alertMessage: `Error has occurred statuscode: ${response.status}`,
-            alertColor: "danger"
-          });
-          //throw Error(response.statusText);
-        } else {
-          const json = await response.json();
-          this.setState({
-            accessToken: json.access_token,
-            refreshToken: json.refresh_token,
-            postBtnDisabled: false,
-            loginBtnDisabled: true,
-            alertMessage: "Login successful move to step 2",
-            alertVisible: true
-          });
-        }
-        // this.postComment();
-      } catch (error) {
-        console.log("error");
-        console.log(error);
+      if (parsed !== null && parsed.code) {
+        this.getAccessToken(parsed.code);
+      } else {
+        this.setState({
+          postBtnDisabled: true,
+          loginBtnDisabled: false,
+          repostBtnDisabled: true
+        });
       }
     }
   }
 
-  async refreshToken() {
+  async getAccessToken(accessCode) {
+    try {
+      const code = accessCode;
+      const authCode = "authorization_code";
+      const data = {
+        grant_type: authCode,
+        code: code,
+        redirect_uri: "http://www.hackandslash.net/msf"
+      };
+
+      const settings = {
+        method: "POST",
+        body: queryString.stringify(data),
+        headers: {
+          Authorization:
+            "Basic cWFCd1JfLWtnb2NQcUE6U2xWN3RHYXJ4MlA0NXE2SFNNLXBNRm4yc0ZZ",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
+
+      const response = await fetch(
+        `https://www.reddit.com/api/v1/access_token`,
+        settings
+      );
+      if (!response.ok) {
+        this.setState({
+          alertVisible: true,
+          alertMessage: `Error has occurred statuscode: ${response.status}`,
+          alertColor: "danger"
+        });
+        //throw Error(response.statusText);
+      } else {
+        const json = await response.json();
+        const shit = json.refresh_token;
+        //alert(json.access_token);
+        //alert(shit);
+        localStorage.setItem("refreshToken", shit);
+
+        this.setState({
+          accessToken: json.access_token,
+          refreshToken: json.refresh_token,
+          postBtnDisabled: false,
+          loginBtnDisabled: true,
+          alertMessage: "Login successful move to step 2",
+          alertVisible: true
+        });
+      }
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+    }
+  }
+
+  async getRefreshToken() {
     try {
       const data = {
         grant_type: "refresh_token",
@@ -100,7 +129,9 @@ export class Msf extends Component {
           alertMessage: `Error has occurred statuscode: ${response.status}`,
           alertColor: "danger"
         });
-        //throw Error(response.statusText);
+
+        // Message to login again
+        // enable 1st button
       } else {
         const json = await response.json();
         this.setState({
@@ -204,9 +235,14 @@ export class Msf extends Component {
               </CardText>
               <Button
                 disabled={this.state.repostBtnDisabled}
-                onClick={() => this.refreshToken()}
+                onClick={() => this.getRefreshToken()}
               >
                 Repost now
+              </Button>
+              <Button
+                onClick={() => alert(localStorage.getItem("refresh_token"))}
+              >
+                View cookie
               </Button>
             </Card>
           </Col>
