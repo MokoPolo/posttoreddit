@@ -11,5 +11,8 @@
     "url": "posttoreddit"
   },
   "author": "Marc Cueto",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-cookie": "^3.0.8"
+  }
 }
