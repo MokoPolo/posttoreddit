@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import queryString from "querystring";
-import { Card, Button, CardTitle, CardText, Row, Col, Alert } from "reactstrap";
+import {
+  Card,
+  Button,
+  CardTitle,
+  CardText,
+  Row,
+  Col,
+  Alert,
+  Input
+} from "reactstrap";
 
 export class Msf extends Component {
   displayName = Msf.name;
@@ -15,9 +24,10 @@ export class Msf extends Component {
       alertColor: "primary",
       repostBtnDisabled: true,
       refreshToken: null,
-      myDog: false
+      checkboxChecked: false,
+      intervalInSeconds: -1
     };
-
+    this.handleChange = this.handleChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
   }
 
@@ -25,15 +35,14 @@ export class Msf extends Component {
     // If localstorage item exists use refresh token to get access token
     // set refresh token
     const storageRefreshToken = localStorage.getItem("refreshToken");
-    this.setState({
-      myDog: true
-    });
-    alert(this.state.myDog);
+
     if (storageRefreshToken) {
-      this.setState({
-        refreshToken: storageRefreshToken
-      });
-      this.getRefreshToken();
+      this.setState(
+        {
+          refreshToken: storageRefreshToken
+        },
+        () => this.getRefreshToken()
+      );
     } else {
       const parsed = queryString.parse(this.props.location.search);
 
@@ -41,8 +50,8 @@ export class Msf extends Component {
         this.getAccessToken(parsed.code);
       } else {
         this.setState({
-          postBtnDisabled: true,
           loginBtnDisabled: false,
+          postBtnDisabled: true,
           repostBtnDisabled: true
         });
       }
@@ -82,16 +91,16 @@ export class Msf extends Component {
         //throw Error(response.statusText);
       } else {
         const json = await response.json();
-        const shit = json.refresh_token;
-        //alert(json.access_token);
-        //alert(shit);
-        localStorage.setItem("refreshToken", shit);
+        const newRefreshToken = json.refresh_token;
+
+        localStorage.setItem("refreshToken", newRefreshToken);
 
         this.setState({
           accessToken: json.access_token,
           refreshToken: json.refresh_token,
-          postBtnDisabled: false,
           loginBtnDisabled: true,
+          postBtnDisabled: false,
+          repostBtnDisabled: true,
           alertMessage: "Login successful move to step 2",
           alertVisible: true
         });
@@ -127,7 +136,10 @@ export class Msf extends Component {
         this.setState({
           alertVisible: true,
           alertMessage: `Error has occurred statuscode: ${response.status}`,
-          alertColor: "danger"
+          alertColor: "danger",
+          loginBtnDisabled: false,
+          postBtnDisabled: true,
+          repostBtnDisabled: true
         });
 
         // Message to login again
@@ -136,18 +148,38 @@ export class Msf extends Component {
         const json = await response.json();
         this.setState({
           accessToken: json.access_token,
+          loginBtnDisabled: false,
           postBtnDisabled: true,
-          loginBtnDisabled: true
+          repostBtnDisabled: false
         });
-        this.postComment();
       }
-      // this.postComment();
     } catch (error) {
       console.log("error");
       console.log(error);
     }
   }
+  handleChange(evt) {
+    //let intervalInHours = 6;
+    //let intervalInSeconds = intervalInHours * 60 * 60 * 1000;
+    this.setState({ checkboxChecked: evt.target.checked });
 
+    if (evt.target.checked) {
+      console.log("Starting timer");
+      this.timer = setInterval(() => {
+        this.goPost();
+      }, 21600000);
+    } else {
+      console.log("Cancelling timer");
+      clearTimeout(this.timer);
+    }
+    // If checked start timer
+    // Else turn off timer
+  }
+  goPost() {
+    console.log("About to post");
+    this.getRefreshToken();
+    this.postComment();
+  }
   onDismiss() {
     this.setState({ alertVisible: false });
   }
@@ -202,6 +234,8 @@ export class Msf extends Component {
               <CardTitle>1. Log into reddit</CardTitle>
               <CardText>
                 Authenticate with reddit so we can post to reddit in step 2.
+                <br />
+                <br />
               </CardText>
               <Button
                 disabled={this.state.loginBtnDisabled}
@@ -217,6 +251,7 @@ export class Msf extends Component {
               <CardText>
                 Post to the MSF alliance recruitment subreddit.
                 <br />
+                <br />
               </CardText>
               <Button
                 disabled={this.state.postBtnDisabled}
@@ -230,19 +265,16 @@ export class Msf extends Component {
             <Card body>
               <CardTitle>2. Repost to reddit</CardTitle>
               <CardText>
-                Repost to the MSF alliance recruitment subreddit.
+                Repost to the MSF alliance recruitment subreddit. <br />
+                <Input addon type="checkbox" onChange={this.handleChange} />
+                &nbsp;Repost every 3 hrs
                 <br />
               </CardText>
               <Button
                 disabled={this.state.repostBtnDisabled}
-                onClick={() => this.getRefreshToken()}
+                onClick={() => this.postComment()}
               >
                 Repost now
-              </Button>
-              <Button
-                onClick={() => alert(localStorage.getItem("refresh_token"))}
-              >
-                View cookie
               </Button>
             </Card>
           </Col>
