@@ -41,7 +41,7 @@ export class Msf extends Component {
         {
           refreshToken: storageRefreshToken
         },
-        () => this.getRefreshToken()
+        () => this.getNewAccessToken()
       );
     } else {
       const parsed = queryString.parse(this.props.location.search);
@@ -111,8 +111,11 @@ export class Msf extends Component {
     }
   }
 
-  async getRefreshToken() {
+  async getNewAccessToken() {
     try {
+      console.log(
+        `In getNewAccessToken(). Refreshtoken is: ${this.state.refreshToken}`
+      );
       const data = {
         grant_type: "refresh_token",
         refresh_token: this.state.refreshToken
@@ -146,12 +149,15 @@ export class Msf extends Component {
         // enable 1st button
       } else {
         const json = await response.json();
+        console.log(`New access token is: ${json.access_token}`);
         this.setState({
           accessToken: json.access_token,
           loginBtnDisabled: false,
           postBtnDisabled: true,
           repostBtnDisabled: false
         });
+
+        return json.access_token;
       }
     } catch (error) {
       console.log("error");
@@ -176,26 +182,27 @@ export class Msf extends Component {
     // Else turn off timer
   }
   goPost() {
-    console.log("About to post");
-    this.getRefreshToken();
-    this.postComment();
+    console.log("In goPost()");
+    let accessToken = this.getNewAccessToken();
+    this.postComment(accessToken);
   }
   onDismiss() {
     this.setState({ alertVisible: false });
   }
   // Post comment to reddit api
-  async postComment() {
+  async postComment(accessToken) {
     const parentId = "t3_9whek6";
     const text =
       "**Alliance%20Name**%3A%20eXtreme%20Force%0A%0A**Description**%3A%20A%20semi-competitive%20alliance%20that%20runs%20daily%20lvl%2065%2B%20Ultimus%20VI%20raids%20to%2060%25%20completion.%20It%E2%80%99s%20an%20organised%20raid%2C%20with%20Strike%20Teams%20and%20Lanes%20pre-identified%20for%20each%20member.%20All%20time-zones%20welcome.%0A%0A**Requirements**%3A%0A%0A**Account%20Level**%3A%2070%0A%0A**Collection%20Power**%3A%201M%2B%0A%0A**Strongest%20Team**%3A%20175K%2B%0A%0A**Minimum%20Damage%20Ultimus%2065%2B**%3A%202%20million%20%0A%0A**Minimum%20Damage%20other%20raids**%3A%202%20million%0A%0A**Donation%20daily%20minimum**%3A%2010k%0A%0A**Daily%20Activity%20is%20a%20must%20(in-game%20and%20Discord)**%0A%0A**How%20to%20Apply**%3A%20%20Msg%20Spitfire_UK%239620%20on%20Discord.%0A%0A**Additional%20Notes**%3A%20Thanos%20III%20T2%2C%20DP%20En%20Fuego%20T2%2C%20Alpha%20T1%2C%20Beta%20III%20T1";
+    console.log(`In postComment(). Access token is: ${accessToken}`);
     const settings = {
       method: "POST",
       headers: {
-        Authorization: "bearer " + this.state.accessToken
+        Authorization: "bearer " + accessToken
       }
     };
     const response = await fetch(
-      "https://oauth.reddit.com/api/comment?api_type=json&text=foobar&thing_id=" +
+      "https://oauth.reddit.com/api/comment?api_type=json&thing_id=" +
         parentId +
         "&text=" +
         text,
@@ -210,21 +217,19 @@ export class Msf extends Component {
       });
       //throw Error(response.status);
     } else {
-      const currentdate = new Date();
       this.setState({
         alertVisible: true,
-        alertMessage:
-          "Posted to Reddit at " +
-          currentdate.getHours() +
-          ":" +
-          currentdate.getMinutes(),
+        alertMessage: "Posted to Reddit at " + this.getTime(),
         alertColor: "success",
         postBtnDisabled: true,
         repostBtnDisabled: false
       });
     }
   }
-
+  getTime() {
+    const currentdate = new Date();
+    return `${currentdate.getHours()}:${currentdate.getMinutes()}`;
+  }
   render() {
     return (
       <div>
@@ -255,7 +260,7 @@ export class Msf extends Component {
               </CardText>
               <Button
                 disabled={this.state.postBtnDisabled}
-                onClick={() => this.postComment()}
+                onClick={() => this.goPost()}
               >
                 Post now
               </Button>
@@ -272,7 +277,7 @@ export class Msf extends Component {
               </CardText>
               <Button
                 disabled={this.state.repostBtnDisabled}
-                onClick={() => this.postComment()}
+                onClick={() => this.postComment(this.state.accessToken)}
               >
                 Repost now
               </Button>
