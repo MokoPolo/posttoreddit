@@ -244,7 +244,7 @@ export class Msf extends Component {
               </CardText>
               <Button
                 disabled={this.state.loginBtnDisabled}
-                href="https://www.reddit.com/api/v1/authorize?client_id=qaBwR_-kgocPqA&response_type=code&state=djdfjdfjkaf&redirect_uri=http://www.hackandslash.net/msf&scope=submit&duration=permanent"
+                href="https://www.reddit.com/api/v1/authorize?client_id=qaBwR_-kgocPqA&response_type=code&state=djdfjdfjkaf&redirect_uri=http://www.hackandslash.net/msf&scope=*&duration=permanent"
               >
                 Log into reddit
               </Button>
