@@ -10,6 +10,7 @@ import {
   Alert,
   Input
 } from "reactstrap";
+import snoowrap from "snoowrap";
 
 export class Msf extends Component {
   displayName = Msf.name;
@@ -58,6 +59,7 @@ export class Msf extends Component {
     }
   }
 
+  // We don't care about access code just refresh token
   async getAccessToken(accessCode) {
     try {
       const code = accessCode;
@@ -111,7 +113,7 @@ export class Msf extends Component {
     }
   }
 
-  async getNewAccessToken() {
+  /* async getNewAccessToken() {
     try {
       console.log(
         `In getNewAccessToken(). Refreshtoken is: ${this.state.refreshToken}`
@@ -162,7 +164,7 @@ export class Msf extends Component {
       console.log("error");
       console.log(error);
     }
-  }
+  } */
   handleChange(evt) {
     //let intervalInHours = 6;
     //let intervalInSeconds = intervalInHours * 60 * 60 * 1000;
@@ -182,8 +184,20 @@ export class Msf extends Component {
   }
   goPost() {
     console.log("In goPost()");
-    let accessToken = this.getNewAccessToken();
-    this.postComment(accessToken);
+    //let accessToken = this.getNewAccessToken();
+    //this.postComment(accessToken);
+
+    const r = new snoowrap({
+      userAgent: 'Extreme force bot',
+      clientId: process.env.REACT_APP_CLIENT_ID,
+      clientSecret: process.env.REACT_APP_CLIENT_SECRET,
+      refreshToken: process.env.REACT_APP_CLIENT_TOKEN
+    });
+
+    var submission = r.getSubmission("t3_9whek6");
+
+    // Post comment
+    submission.reply("hi");
   }
   onDismiss() {
     this.setState({ alertVisible: false });

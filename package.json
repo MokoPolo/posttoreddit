@@ -13,6 +13,7 @@
   "author": "Marc Cueto",
   "license": "ISC",
   "dependencies": {
-    "react-cookie": "^3.0.8"
+    "react-cookie": "^3.0.8",
+    "snoowrap": "^1.15.2"
   }
 }
