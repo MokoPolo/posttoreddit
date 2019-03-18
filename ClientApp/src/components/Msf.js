@@ -125,8 +125,7 @@ export class Msf extends Component {
         method: "POST",
         body: queryString.stringify(data),
         headers: {
-          Authorization:
-            "Basic cWFCd1JfLWtnb2NQcUE6U2xWN3RHYXJ4MlA0NXE2SFNNLXBNRm4yc0ZZ",
+          Authorization: `Basic ${process.env.REACT_APP_AUTHORIZATION}`,
           "Content-Type": "application/x-www-form-urlencoded"
         }
       };
@@ -244,7 +243,9 @@ export class Msf extends Component {
               </CardText>
               <Button
                 disabled={this.state.loginBtnDisabled}
-                href="https://www.reddit.com/api/v1/authorize?client_id=qaBwR_-kgocPqA&response_type=code&state=djdfjdfjkaf&redirect_uri=http://www.hackandslash.net/msf&scope=*&duration=permanent"
+                href={`https://www.reddit.com/api/v1/authorize?client_id=${
+                  process.env.REACT_APP_CLIENT_ID
+                }&response_type=code&state=djdfjdfjkaf&redirect_uri=http://www.hackandslash.net/msf&scope=*&duration=permanent`}
               >
                 Log into reddit
               </Button>
