@@ -239,6 +239,21 @@ export class Msf extends Component {
       });
     }
   }
+  test() {
+    alert('hi');
+
+    const r = new snoowrap({
+      userAgent: 'Extreme force bot',
+      clientId: process.env.REACT_APP_CLIENT_ID,
+      clientSecret: process.env.REACT_APP_CLIENT_SECRET,
+      refreshToken: process.env.REACT_APP_CLIENT_TOKEN
+    });
+
+    var submission = r.getSubmission("t3_9whek6");
+
+    // Post comment
+    //submission.reply("hi");
+  }
   getTime() {
     const currentdate = new Date();
     return `${currentdate.getHours()}:${currentdate.getMinutes()}`;
@@ -247,7 +262,7 @@ export class Msf extends Component {
     return (
       <div>
         <Row>
-          <Col sm="4">
+          <Col sm="3">
             <Card body>
               <CardTitle>1. Log into reddit</CardTitle>
               <CardText>
@@ -265,11 +280,12 @@ export class Msf extends Component {
               </Button>
             </Card>
           </Col>
-          <Col sm="4">
+          <Col sm="3">
             <Card body>
               <CardTitle>2. Post to reddit</CardTitle>
               <CardText>
                 Post to the MSF alliance recruitment subreddit.
+                <br />
                 <br />
                 <br />
               </CardText>
@@ -281,9 +297,9 @@ export class Msf extends Component {
               </Button>
             </Card>
           </Col>
-          <Col sm="4">
+          <Col sm="3">
             <Card body>
-              <CardTitle>2. Repost to reddit</CardTitle>
+              <CardTitle>3. Repost to reddit</CardTitle>
               <CardText>
                 Repost to the MSF alliance recruitment subreddit. <br />
                 <Input addon type="checkbox" onChange={this.handleChange} />
@@ -295,6 +311,20 @@ export class Msf extends Component {
                 onClick={() => this.postComment(this.state.accessToken)}
               >
                 Repost now
+              </Button>
+            </Card>
+          </Col>
+          <Col sm="3">
+            <Card body>
+              <CardTitle>4. Test</CardTitle>
+              <CardText>
+                Test snoowrap. <br /><br />
+                <br />
+              </CardText>
+              <Button
+                onClick={() => this.test()}
+              >
+                Test
               </Button>
             </Card>
           </Col>
